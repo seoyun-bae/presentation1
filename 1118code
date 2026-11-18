@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <string.h>
+
+// 결제 방식에 따라 다른 정보를 저장하는 공용체
+union PaymentInfo {
+    char cardNumber[5];  // 카드 뒷자리 4개
+    int receiptNumber;   // 현금영수증 번호
+};
+
+// 하나의 지출 정보를 저장하는 구조체
+struct Expense {
+    char name[30];       // 지출 항목
+    int amount;          // 지출 금액
+    int method;          // 1: 카드, 2: 현금
+    union PaymentInfo payment;
+};
+
+// 전체 지출 금액을 계산하는 함수
+int calculateTotal(struct Expense list[], int size) {
+    int total = 0;
+
+    for (int i = 0; i < size; i++) {
+        total += list[i].amount;
+    }
+
+    return total;
+}
+
+// 구조체 포인터를 이용해 지출 정보 출력
+void printExpense(struct Expense *e) {
+    printf("항목: %s\n", e->name);
+    printf("금액: %d원\n", e->amount);
+
+    if (e->method == 1) {
+        printf("결제 방식: 카드\n");
+        printf("카드 뒷자리: %s\n",
+               e->payment.cardNumber);
+    }
+    else {
+        printf("결제 방식: 현금\n");
+        printf("영수증 번호: %d\n",
+               e->payment.receiptNumber);
+    }
+
+    printf("----------------------\n");
+}
+
+int main() {
+
+    // 구조체 배열 생성
+    struct Expense expenses[3];
+
+    // 첫 번째 지출 정보
+    strcpy(expenses[0].name, "점심식사");
+    expenses[0].amount = 9000;
+    expenses[0].method = 1;
+    strcpy(expenses[0].payment.cardNumber, "1234");
+
+    // 두 번째 지출 정보
+    strcpy(expenses[1].name, "카페");
+    expenses[1].amount = 5000;
+    expenses[1].method = 2;
+    expenses[1].payment.receiptNumber = 1001;
+
+    // 세 번째 지출 정보
+    strcpy(expenses[2].name, "교통비");
+    expenses[2].amount = 1500;
+    expenses[2].method = 1;
+    strcpy(expenses[2].payment.cardNumber, "5678");
+
+    int size = 3;
+
+    printf("===== 하루 지출 내역 =====\n");
+
+    for (int i = 0; i < size; i++) {
+        printExpense(&expenses[i]);
+    }
+
+    // 전체 지출 금액 계산
+    int total = calculateTotal(expenses, size);
+
+    // 평균 지출 금액 계산
+    double average = (double)total / size;
+
+    // 가장 많은 지출 항목 찾기
+    int maxIndex = 0;
+
+    for (int i = 1; i < size; i++) {
+        if (expenses[i].amount >
+            expenses[maxIndex].amount) {
+            maxIndex = i;
+        }
+    }
+
+    printf("\n===== 지출 분석 결과 =====\n");
+    printf("총 지출 금액: %d원\n", total);
+    printf("평균 지출 금액: %.1f원\n", average);
+    printf("최대 지출 항목: %s\n",
+           expenses[maxIndex].name);
+    printf("최대 지출 금액: %d원\n",
+           expenses[maxIndex].amount);
+
+    return 0;
+}
