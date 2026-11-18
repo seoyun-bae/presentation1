@@ -1,0 +1,52 @@
+
+#include <stdio.h>
+
+int main() {
+
+    // 일주일 물 섭취량을 저장할 배열
+    int water[7];
+
+    int total = 0;
+    int max = 0;
+    int maxDay = 0;
+    double average;
+
+    // 요일별 물 섭취량 입력
+    printf("===== 일주일 물 섭취량 기록 =====\n");
+
+    for (int i = 0; i < 7; i++) {
+        printf("%d일차 물 섭취량(ml): ", i + 1);
+        scanf("%d", &water[i]);
+    }
+
+    // 전체 물 섭취량 계산
+    for (int i = 0; i < 7; i++) {
+        total += water[i];
+    }
+
+    // 평균 물 섭취량 계산
+    average = (double)total / 7;
+
+    // 가장 많이 마신 날 찾기
+    max = water[0];
+
+    for (int i = 1; i < 7; i++) {
+        if (water[i] > max) {
+            max = water[i];
+            maxDay = i;
+        }
+    }
+
+    // 결과 출력
+    printf("\n===== 물 섭취량 분석 결과 =====\n");
+
+    printf("일주일 총 섭취량: %dml\n", total);
+    printf("하루 평균 섭취량: %.1fml\n", average);
+
+    printf("물을 가장 많이 마신 날: %d일차\n",
+           maxDay + 1);
+
+    printf("가장 많이 마신 양: %dml\n", max);
+
+    return 0;
+}
