@@ -1,0 +1,48 @@
+
+#include <stdio.h>
+
+int main() {
+
+    // 택배 정보를 저장하는 구조체 선언
+    struct Delivery {
+        char product[30];
+        char company[20];
+        char tracking[20];
+        int status;
+    };
+
+    // 구조체 변수에 택배 정보 저장
+    struct Delivery parcel = {
+        "무선 이어폰",
+        "대한택배",
+        "1234567890",
+        2
+    };
+
+    printf("===== 택배 배송 정보 =====\n");
+
+    // 구조체 멤버 출력
+    printf("상품명: %s\n", parcel.product);
+    printf("택배 회사: %s\n", parcel.company);
+    printf("운송장 번호: %s\n", parcel.tracking);
+
+    printf("\n===== 배송 상태 확인 =====\n");
+
+    // 배송 상태에 따른 조건문
+    if (parcel.status == 1) {
+        printf("배송 준비 중입니다.\n");
+    }
+    else if (parcel.status == 2) {
+        printf("배송 중입니다.\n");
+    }
+    else if (parcel.status == 3) {
+        printf("배송이 완료되었습니다.\n");
+    }
+    else {
+        printf("배송 상태를 확인할 수 없습니다.\n");
+    }
+
+    printf("\n택배 정보를 확인해 주셔서 감사합니다.\n");
+
+    return 0;
+}
